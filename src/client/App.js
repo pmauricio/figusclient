@@ -21,7 +21,7 @@ export default class App extends Component {
     return (
       <div>
       <Fabric>
-      <DefaultButton>
+      <DefaultButton >
         I am a button.
       </DefaultButton>
     </Fabric>
