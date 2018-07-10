@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import './app.css';
-
+import  GoogleLogout  from 'react-google-login';
 import { Fabric } from 'office-ui-fabric-react/lib/Fabric';
 import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
-
+import ReactDOM from 'react-dom';
+import GoogleLogin from 'react-google-login';
+import { IPersonaSharedProps, Persona, PersonaSize, PersonaPresence } from 'office-ui-fabric-react/lib/Persona';
+import { Label } from 'office-ui-fabric-react/lib/Label';
+import { Pivot, PivotItem } from 'office-ui-fabric-react/lib/Pivot';
 
 export default class App extends Component {
   constructor(props) {
@@ -12,26 +16,76 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    fetch('/api/getUsername')
-      .then(res => res.json())
-      .then(user => this.setState({ username: user.username }));
+//    fetch('/api/getUsername')
+//      .then(res => res.json())
+//      .then(user => this.setState({ username: user.username }));
   }
 
-  render() {
-    return (
-      <div>
-      <Fabric>
-      <DefaultButton >
-        I am a button.
-      </DefaultButton>
-    </Fabric>
 
-        {this.state.username ? (
+   
+   
+  responseGoogle = (response) => {
+    console.log(response.w3);
+    this.setState({username:response.w3.ig,paa:response.w3.Paa});
+
+  }
+  responseGoo = (response) => {
+   alert('nok');
+    console.log(response);
+  }
+  render() {
+
+    if(this.state.username){
+      return(
+        <div>
+            <Persona
+            imageUrl= {this.state.paa}
+            imageInitials= 'AL'
+            text= {this.state.username}
+          size={PersonaSize.size24}
+          presence={PersonaPresence.online}
+/>     <Pivot>
+          <PivotItem
+            headerText="My items"
+            headerButtonProps={{
+              'data-order': 1,
+              'data-title': 'My items',
+              'background-color':'white'
+            }}
+          >
+            <Label>Pivot #1</Label>
+          </PivotItem>
+          <PivotItem linkText="Recent">
+          {this.state.username ? (
           <h1>Hello {this.state.username}</h1>
         ) : (
           <h1>Loading.. please wait!</h1>
-        )}
+     )}
+          </PivotItem>
+          <PivotItem linkText="Shared with me">
+            <Label>Pivot #3</Label>
+          </PivotItem>
+        </Pivot> 
+     
+    
+     
+     </div>
+     );
+
+    }else{
+    return (
+      <div className='login'>
+      <GoogleLogin  
+      clientId="966039870056-b8ub7bkkhj13mjsuqe2j7dek1li6n791.apps.googleusercontent.com"
+      buttonText="Login" 
+      onSuccess={this.responseGoogle}
+      onFailure={this.responseGoo}
+     
+    />
+      
       </div>
     );
   }
+  }
+   
 }
