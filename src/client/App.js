@@ -8,7 +8,7 @@ import GoogleLogin from 'react-google-login';
 import { IPersonaSharedProps, Persona, PersonaSize, PersonaPresence } from 'office-ui-fabric-react/lib/Persona';
 import { Label } from 'office-ui-fabric-react/lib/Label';
 import { Pivot, PivotItem } from 'office-ui-fabric-react/lib/Pivot';
-
+import {CommandBarBasicExample} from './components/commandBar.js'
 export default class App extends Component {
   constructor(props) {
     super(props);
@@ -38,13 +38,8 @@ export default class App extends Component {
     if(this.state.username){
       return(
         <div>
-            <Persona
-            imageUrl= {this.state.paa}
-            imageInitials= 'AL'
-            text= {this.state.username}
-          size={PersonaSize.size24}
-          presence={PersonaPresence.online}
-/>     <Pivot>
+          <div>
+              <Pivot>
           <PivotItem
             headerText="My items"
             headerButtonProps={{
@@ -53,6 +48,7 @@ export default class App extends Component {
               'background-color':'white'
             }}
           >
+         < CommandBarBasicExample/>
             <Label>Pivot #1</Label>
           </PivotItem>
           <PivotItem linkText="Recent">
@@ -66,9 +62,16 @@ export default class App extends Component {
             <Label>Pivot #3</Label>
           </PivotItem>
         </Pivot> 
-     
-    
-     
+     </div>
+     <div className='footer'>
+        <Persona
+            imageUrl= {this.state.paa}
+            imageInitials= 'AL'
+            text= {this.state.username}
+          size={PersonaSize.size40}
+          presence={PersonaPresence.online}
+/>  
+     </div>
      </div>
      );
 
