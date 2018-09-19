@@ -13,10 +13,12 @@
   "author": "Sandeep Raveesh",
   "license": "ISC",
   "dependencies": {
+    "antd": "^3.9.2",
     "express": "^4.16.3",
     "office-ui-fabric-react": "^6.25.4",
     "react": "^16.3.1",
-    "react-dom": "^16.3.1"
+    "react-dom": "^16.3.1",
+    "react-google-login": "^3.2.1"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
