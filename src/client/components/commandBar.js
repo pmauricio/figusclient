@@ -2,13 +2,19 @@ import * as React from 'react';
 
 import { CommandBar, ICommandBarProps } from 'office-ui-fabric-react/lib/CommandBar';
 import { CommandBarButton, IButtonProps } from 'office-ui-fabric-react/lib/Button';
+import { PanelLector } from  './Lector';
 export class CommandBarBasicExample extends React.Component<ICommandBarProps, {}> {
   constructor(props: ICommandBarProps) {
     super(props);
+    this.child = React.createRef();
     this.state = {
       areNamesVisible: true,
       areIconsVisible: true
     };
+  }
+  openPanel(){
+    console.log("poen ");
+    this.child.current._onShowPanel();
   }
 
    render() {
@@ -49,7 +55,7 @@ export class CommandBarBasicExample extends React.Component<ICommandBarProps, {}
     iconProps: {
       iconName: 'Share'
     },
-    onClick: () => console.log('Share')
+    onClick: () => this.openPanel()
   },
   {
     key: 'download',
@@ -69,6 +75,7 @@ export class CommandBarBasicExample extends React.Component<ICommandBarProps, {}
           farItems={farItems}
           ariaLabel={'Use left and right arrow keys to navigate between commands'}
         />
+        <PanelLector ref={this.child} />  
       </div>
     );
   }

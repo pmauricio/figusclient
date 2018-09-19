@@ -7,27 +7,55 @@ import ReactDOM from 'react-dom';
 import GoogleLogin from 'react-google-login';
 import { IPersonaSharedProps, Persona, PersonaSize, PersonaPresence } from 'office-ui-fabric-react/lib/Persona';
 import { Label } from 'office-ui-fabric-react/lib/Label';
+import { Spinner } from 'office-ui-fabric-react/lib/Spinner';
 import { Pivot, PivotItem } from 'office-ui-fabric-react/lib/Pivot';
 import {CommandBarBasicExample} from './components/commandBar.js'
+import { PanelLector } from  './components/Lector';
+import { ProjectsDropDown } from  './components/Projects';
+import { ClientsDropDown } from  './components/Clients';
+
+
 export default class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { username: null };
+    this.state = { username: null,loading:true };
   }
 
   componentDidMount() {
-//    fetch('/api/getUsername')
-//      .then(res => res.json())
-//      .then(user => this.setState({ username: user.username }));
+    fetch('/login',{      headers: {'Content-Type':'text/plain'}})
+      .then(res => {res.json()
+      .then(user => {
+        this.setState(user);     
+        this.setState({loading:false})
+      }).catch(()=>  this.setState({loading:false}))}).catch(()=>  this.setState({loading:false}));
   }
 
 
    
    
   responseGoogle = (response) => {
-    console.log(response.w3);
+    console.log(response.w3); 
     this.setState({username:response.w3.ig,paa:response.w3.Paa});
-
+    
+    fetch('/login', {
+      method: 'post',
+      headers: {'Content-Type':'text/plain'},
+     body: '{"username":"'+response.w3.ig+'", "paa":"'+response.w3.Paa+'"}'
+    }).then((responseLogin)=>{
+          //console.log(responseLogin.json());
+          responseLogin.text().then((text)=>{
+              console.log(text);
+              this.setState({username:this.state.username+'(ok)'});
+              this.setState({loading:false});
+          
+      })
+       })
+       
+       .catch(function() {
+      console.log("error");
+  }).catch(function() {
+    console.log("error");
+});
   }
   responseGoo = (response) => {
    alert('nok');
@@ -76,6 +104,9 @@ export default class App extends Component {
      );
 
     }else{
+      if(this.state.loading)
+      return(<Spinner/>);
+      else
     return (
       <div className='login'>
       <GoogleLogin  

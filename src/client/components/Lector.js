@@ -20,7 +20,6 @@ export class PanelLector extends Component<
    render=() : void =>{
     return (
       <div>
-        <DefaultButton secondaryText="Opens the Sample Panel" onClick={this._onShowPanel} text="Open Panel" />
         <Panel
           isOpen={this.state.showPanel}
           type={PanelType.medium}
