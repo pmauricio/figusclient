@@ -14,21 +14,27 @@ import {CommandBarBasicExample} from './components/commandBar.js'
 import { PanelLector } from  './components/Lector';
 import { ProjectsDropDown } from  './components/Projects';
 import { ClientsDropDown } from  './components/Clients';
-
+import store from './store'
 
 export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = { username: null,loading:true };
+   
+    store.subscribe(()=>{
+      this.setState(store.getState().user);
+    });
   }
 
   componentDidMount() {
-    fetch('/login',{headers: {'Content-Type':'text/plain'}})
+    fetch('/api/login',{headers: {'Content-Type':'text/plain'}})
       .then(res => {res.json()
       .then(user => {
         console.log('logado '+user);
-        this.setState(user);     
-        this.setState({loading:false})
+       // this.login(user);
+       aux = this.login(user);
+       console.log("ppppppp" +aux);
+        this.setState(aux);
       }).catch(()=>  this.setState({loading:false}))}).catch(()=>  this.setState({loading:false}));
   }
 
@@ -39,7 +45,7 @@ export default class App extends Component {
     console.log(response.w3); 
     this.setState({username:response.w3.ig,paa:response.w3.Paa});
     
-    fetch('/login', {
+    fetch('/api/login', {
       method: 'post',
       headers: {'Content-Type':'text/plain'},
       body: '{"username":"'+response.w3.ig+'", "paa":"'+response.w3.Paa+'","email":'+'""}'
@@ -134,5 +140,11 @@ export default class App extends Component {
     );
   }
   }
-   
+   login(user){
+     store.dispatch({
+       type:"LOGIN",
+       user
+     });
+   }
+
 }

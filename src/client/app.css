@@ -32,9 +32,9 @@ footer:after {
 }
 .column {
   float: left;
-  width: 60%;
+  width: 70%;
 }
 .column2 {
   float: right;
-  width: 40%;
+  width: 30%;
 }
