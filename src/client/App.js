@@ -8,6 +8,7 @@ import GoogleLogin from 'react-google-login';
 import { IPersonaSharedProps, Persona, PersonaSize, PersonaPresence } from 'office-ui-fabric-react/lib/Persona';
 import { Label } from 'office-ui-fabric-react/lib/Label';
 import { Spinner } from 'office-ui-fabric-react/lib/Spinner';
+import { Dialog } from 'office-ui-fabric-react/lib/Dialog';
 import { Pivot, PivotItem } from 'office-ui-fabric-react/lib/Pivot';
 import {CommandBarBasicExample} from './components/commandBar.js'
 import { PanelLector } from  './components/Lector';
@@ -22,9 +23,10 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    fetch('/login',{      headers: {'Content-Type':'text/plain'}})
+    fetch('/login',{headers: {'Content-Type':'text/plain'}})
       .then(res => {res.json()
       .then(user => {
+        console.log('logado '+user);
         this.setState(user);     
         this.setState({loading:false})
       }).catch(()=>  this.setState({loading:false}))}).catch(()=>  this.setState({loading:false}));
@@ -40,7 +42,7 @@ export default class App extends Component {
     fetch('/login', {
       method: 'post',
       headers: {'Content-Type':'text/plain'},
-     body: '{"username":"'+response.w3.ig+'", "paa":"'+response.w3.Paa+'"}'
+      body: '{"username":"'+response.w3.ig+'", "paa":"'+response.w3.Paa+'","email":'+'""}'
     }).then((responseLogin)=>{
           //console.log(responseLogin.json());
           responseLogin.text().then((text)=>{
@@ -91,14 +93,25 @@ export default class App extends Component {
           </PivotItem>
         </Pivot> 
      </div>
+
      <div className='footer'>
+
+
+    <div class="column">
+   
         <Persona
             imageUrl= {this.state.paa}
             imageInitials= 'AL'
-            text= {this.state.username}
+            text= {this.state.username
+          }
           size={PersonaSize.size40}
           presence={PersonaPresence.online}
-/>  
+/> </div>
+<div class="column2">
+
+  <DefaultButton text='Logout' onClick={()=>fetch('/logout').then((res)=> this.setState( { username: null}))}/>
+  </div> 
+
      </div>
      </div>
      );
